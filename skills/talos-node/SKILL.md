@@ -58,6 +58,6 @@ node ./scripts/talosctl-helper.js reset --nodes 10.0.10.10 --system-labels-to-wi
 
 ---
 
-## 3. Report
+## Advanced Topics & Reference Guides
+* For etcd snapshots, restores, process/memory stats, container inspection, and disk layouts, see `references/etcd-and-troubleshooting.md`.
 
-Report node version, active service states, memory/CPU usage, and reboot/reset status.

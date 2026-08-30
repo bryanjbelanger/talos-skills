@@ -78,6 +78,6 @@ kubectl --kubeconfig ./kubeconfig get nodes -o wide
 
 ---
 
-## 6. Report
+## Advanced Topics & Reference Guides
+* For machine config patches, inline JSON/YAML overlays, and HA VIP setup, see `references/config-patches.md`.
 
-Report cluster name, endpoint, node IP addresses, etcd status, and `kubeconfig` location.
