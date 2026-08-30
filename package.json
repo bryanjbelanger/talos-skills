@@ -1,0 +1,32 @@
+{
+  "name": "@bryanjbelanger/talos-skills",
+  "version": "1.0.0",
+  "description": "Talos Linux Kubernetes cluster management skills suite for Pi agent using talosctl CLI.",
+  "type": "module",
+  "main": "scripts/talosctl-helper.js",
+  "bin": {
+    "talosctl-helper": "scripts/talosctl-helper.js"
+  },
+  "files": [
+    "skills/",
+    "scripts/",
+    "README.md"
+  ],
+  "pi": {
+    "skills": [
+      "skills"
+    ]
+  },
+  "keywords": [
+    "pi",
+    "pi-skill",
+    "talos",
+    "talosctl",
+    "kubernetes",
+    "k8s",
+    "siderolabs",
+    "devops"
+  ],
+  "author": "Bryan Belanger <bryanbelanger@hotmail.com>",
+  "license": "MIT"
+}
