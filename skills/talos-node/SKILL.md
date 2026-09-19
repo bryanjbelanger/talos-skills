@@ -9,7 +9,7 @@ description: Manage Talos Linux nodes — inspect machine status, view service l
 
 Verify `talosctl` client configuration:
 ```bash
-node ./scripts/talosctl-helper.js version --nodes 10.0.10.10
+npx --no talosctl-helper version --nodes 10.0.10.10
 ```
 
 ---
@@ -19,20 +19,23 @@ node ./scripts/talosctl-helper.js version --nodes 10.0.10.10
 ### View Machine Services & Resources
 ```bash
 # List running Talos machine services (etcd, kubelet, containerd, etc.)
-node ./scripts/talosctl-helper.js service --nodes 10.0.10.10
+npx --no talosctl-helper service --nodes 10.0.10.10
 
 # Get machine members and cluster state
-node ./scripts/talosctl-helper.js get members --nodes 10.0.10.10
+npx --no talosctl-helper get members --nodes 10.0.10.10
 ```
 
 ### View Logs & Kernel Messages
 ```bash
-# View kubelet or containerd logs
-node ./scripts/talosctl-helper.js logs kubelet --nodes 10.0.10.10
-node ./scripts/talosctl-helper.js logs containerd --nodes 10.0.10.10
+# View kubelet or containerd logs (--tail limits output; without it the full log is returned)
+npx --no talosctl-helper logs kubelet --nodes 10.0.10.10 --tail 200
+npx --no talosctl-helper logs containerd --nodes 10.0.10.10 --tail 200
+
+# View logs of a Kubernetes workload container (ID from `containers --namespace cri`)
+npx --no talosctl-helper logs --namespace cri <container-id> --nodes 10.0.10.10 --tail 200
 
 # View kernel dmesg
-node ./scripts/talosctl-helper.js dmesg --nodes 10.0.10.10
+npx --no talosctl-helper dmesg --nodes 10.0.10.10
 ```
 
 ---
@@ -41,19 +44,32 @@ node ./scripts/talosctl-helper.js dmesg --nodes 10.0.10.10
 
 ### Reboot Node
 ```bash
-node ./scripts/talosctl-helper.js reboot --nodes 10.0.10.10
+# --drain cordons the node and evicts pods first (off by default for reboot)
+npx --no talosctl-helper reboot --nodes 10.0.10.10 --drain
 ```
 
 ### Upgrade Talos OS Image
-Upgrade a node to a newer Talos Linux installer image:
+Upgrade one node at a time. The image format is `factory.talos.dev/metal-installer/<schematic-id>:<version>`. Reuse the node's current schematic ID so its system extensions are kept. Without `--image`, talosctl v1.14.1 uses the schematic with no extensions. `upgrade` drains the node by default.
 ```bash
-node ./scripts/talosctl-helper.js upgrade --nodes 10.0.10.10 --image factory.talos.dev/installer/v1.9.4
+# The schematic ID is listed by the "schematic" entry
+npx --no talosctl-helper get extensions --nodes 10.0.10.10
+
+npx --no talosctl-helper upgrade --nodes 10.0.10.10 --image factory.talos.dev/metal-installer/<schematic-id>:v1.14.1
+
+# Return to the previous installation if the new one misbehaves
+npx --no talosctl-helper rollback --nodes 10.0.10.10
+```
+
+### Upgrade Kubernetes
+```bash
+# Show the plan first, then run without --dry-run
+npx --no talosctl-helper upgrade-k8s --nodes 10.0.10.10 --to 1.37.0 --dry-run
 ```
 
 ### Reset Node (Wipe & Return to Maintenance Mode)
 Wipe node data disk and reset to clean installer state:
 ```bash
-node ./scripts/talosctl-helper.js reset --nodes 10.0.10.10 --system-labels-to-wipe STATE,EPHEMERAL --reboot
+npx --no talosctl-helper reset --nodes 10.0.10.10 --system-labels-to-wipe STATE,EPHEMERAL --reboot
 ```
 
 ---

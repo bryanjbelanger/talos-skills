@@ -9,7 +9,7 @@ description: Create, configure, bootstrap, and validate Talos Linux Kubernetes c
 
 Verify `talosctl` is installed (auto-installed if missing via helper):
 ```bash
-node ./scripts/talosctl-helper.js version --client
+npx --no talosctl-helper version --client
 ```
 
 ---
@@ -18,10 +18,17 @@ node ./scripts/talosctl-helper.js version --client
 
 Generate Talos machine configurations for control plane and worker nodes along with `talosconfig`:
 ```bash
-# Syntax: talosctl gen config <cluster-name> <cluster-endpoint-url> --output-dir <dir>
-node ./scripts/talosctl-helper.js gen config "vbox-dc" "https://10.0.10.10:6443" --output-dir ./talos-config
+# Find the install disk on a node in maintenance mode (gen config defaults to /dev/sda)
+npx --no talosctl-helper get disks --insecure --nodes 10.0.10.10
+
+# Syntax: talosctl gen config <cluster-name> <cluster-endpoint-url> --output <dir>
+npx --no talosctl-helper gen config "vbox-dc" "https://10.0.10.10:6443" --install-disk /dev/sda --output ./talos-config
+
+# Validate before applying
+npx --no talosctl-helper validate --config ./talos-config/controlplane.yaml --mode metal --strict
+npx --no talosctl-helper validate --config ./talos-config/worker.yaml --mode metal --strict
 ```
-*Produces `controlplane.yaml`, `worker.yaml`, and `talosconfig`.*
+*Produces `controlplane.yaml`, `worker.yaml`, and `talosconfig`. The machine configs are multi-document YAML, and `--output-dir` is deprecated in favor of `--output`.*
 
 ---
 
@@ -31,10 +38,10 @@ Apply the generated machine configs to fresh Talos nodes in maintenance mode:
 
 ```bash
 # Apply to Control Plane Node (insecure initial apply before TLS PKI is active)
-node ./scripts/talosctl-helper.js apply-config --insecure --nodes 10.0.10.10 --file ./talos-config/controlplane.yaml
+npx --no talosctl-helper apply-config --insecure --nodes 10.0.10.10 --file ./talos-config/controlplane.yaml
 
 # Apply to Worker Node
-node ./scripts/talosctl-helper.js apply-config --insecure --nodes 10.0.20.20 --file ./talos-config/worker.yaml
+npx --no talosctl-helper apply-config --insecure --nodes 10.0.20.20 --file ./talos-config/worker.yaml
 ```
 
 ---
@@ -44,9 +51,9 @@ node ./scripts/talosctl-helper.js apply-config --insecure --nodes 10.0.20.20 --f
 Merge the generated `talosconfig` context and target the control plane endpoint:
 ```bash
 # Merge context
-node ./scripts/talosctl-helper.js config merge ./talos-config/talosconfig
-node ./scripts/talosctl-helper.js config endpoint 10.0.10.10
-node ./scripts/talosctl-helper.js config node 10.0.10.10
+npx --no talosctl-helper config merge ./talos-config/talosconfig
+npx --no talosctl-helper config endpoint 10.0.10.10
+npx --no talosctl-helper config node 10.0.10.10
 ```
 
 ---
@@ -55,7 +62,7 @@ node ./scripts/talosctl-helper.js config node 10.0.10.10
 
 Bootstrap the primary control plane node (run **once** per cluster):
 ```bash
-node ./scripts/talosctl-helper.js bootstrap --nodes 10.0.10.10
+npx --no talosctl-helper bootstrap --nodes 10.0.10.10
 ```
 
 ---
@@ -65,10 +72,10 @@ node ./scripts/talosctl-helper.js bootstrap --nodes 10.0.10.10
 Fetch cluster kubeconfig and verify Kubernetes API accessibility:
 ```bash
 # Retrieve kubeconfig
-node ./scripts/talosctl-helper.js kubeconfig . --nodes 10.0.10.10
+npx --no talosctl-helper kubeconfig . --nodes 10.0.10.10
 
 # Validate cluster health
-node ./scripts/talosctl-helper.js health --nodes 10.0.10.10
+npx --no talosctl-helper health --nodes 10.0.10.10
 ```
 
 Verify with `kubectl`:
@@ -79,5 +86,5 @@ kubectl --kubeconfig ./kubeconfig get nodes -o wide
 ---
 
 ## Advanced Topics & Reference Guides
-* For machine config patches, inline JSON/YAML overlays, and HA VIP setup, see `references/config-patches.md`.
+* For machine config patches, typed config documents, and HA VIP setup, see `references/config-patches.md`.
 

@@ -22,7 +22,7 @@ A complete **Pi Skills** suite for managing immutable [Talos Linux](https://www.
 
 ## Installation & Usage
 
-### Option A: Install via npm package
+### Install via npm package
 In any project:
 ```bash
 npm install --save-dev @bryanjbelanger/talos-skills
