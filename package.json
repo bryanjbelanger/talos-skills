@@ -1,6 +1,6 @@
 {
   "name": "@bryanjbelanger/talos-skills",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Talos Linux Kubernetes cluster management skills suite for Pi agent using talosctl CLI.",
   "type": "module",
   "main": "scripts/talosctl-helper.js",
