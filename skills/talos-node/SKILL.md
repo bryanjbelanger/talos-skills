@@ -1,6 +1,6 @@
 ---
 name: talos-node
-description: Manage Talos Linux nodes — inspect machine status, view service logs, reboot, upgrade, or reset nodes via talosctl. Use when checking Talos node health, viewing dmesg/logs, rebooting nodes, or upgrading Talos OS.
+description: Operate and troubleshoot running Talos Linux nodes with talosctl. Use when a node is NotReady or a service or pod is failing (service status, kubelet, containerd and container logs, dmesg, processes, memory, disks, network, debug container, support bundle), rebooting with a drain, upgrading Talos OS or Kubernetes, rolling back an upgrade, resetting or decommissioning a node, backing up, defragmenting, or restoring etcd, or reading a node's live machine config.
 ---
 
 # Talos Node Operations

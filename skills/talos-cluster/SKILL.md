@@ -1,6 +1,6 @@
 ---
 name: talos-cluster
-description: Create, configure, bootstrap, and validate Talos Linux Kubernetes clusters using talosctl. Use when generating machine configs, applying node configs, bootstrapping etcd, fetching kubeconfig, or checking cluster health.
+description: Provision and configure Talos Linux Kubernetes clusters with talosctl. Use when building a new cluster (gen config, apply-config to maintenance-mode nodes, bootstrap etcd, fetch kubeconfig, verify health), joining a control plane or worker node to an existing cluster, setting up an HA control plane VIP, or changing machine config with patches (network, NTP, sysctls, extra manifests) at generation time or on live nodes.
 ---
 
 # Talos Linux Cluster Management

@@ -8,8 +8,8 @@ A complete **Pi Skills** suite for managing immutable [Talos Linux](https://www.
 
 | Skill | Description | Usage Command |
 | :--- | :--- | :--- |
-| **`talos-cluster`** | Generating configs, applying node configurations, bootstrapping etcd, fetching `kubeconfig`, and validating cluster health. | `/skill:talos-cluster` |
-| **`talos-node`** | Inspecting machine services, viewing logs (`kubelet`, `dmesg`), rebooting, OS upgrades, and node resets. | `/skill:talos-node` |
+| **`talos-cluster`** | Building a new cluster (`gen config`, `apply-config`, etcd bootstrap, `kubeconfig`, health check), joining nodes, HA control plane VIP, and machine config patches. | `/skill:talos-cluster` |
+| **`talos-node`** | Troubleshooting a NotReady node or failing service (logs, `dmesg`, processes, disks, network, debug container, support bundle), reboots, Talos OS and Kubernetes upgrades, rollback, node reset, and etcd backup and restore. | `/skill:talos-node` |
 
 ---
 
